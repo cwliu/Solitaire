@@ -6,4 +6,6 @@ class GameModel {
             FoundationPile(diamonds),
             FoundationPile(hearts),
             FoundationPile(spades))
+
+    var tableauPile = Array(7, {TableauPile()})
 }
