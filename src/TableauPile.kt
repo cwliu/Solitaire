@@ -5,7 +5,7 @@ class TableauPile(var cards: MutableList<Card> = mutableListOf()) {
         }
     }
 
-    fun addCard(newCards: MutableList<Card>): Boolean {
+    fun addCards(newCards: MutableList<Card>): Boolean {
         if(cards.size > 0 ){
             if (newCards.first().value == cards.last().value - 1
                     && suitCheck(newCards.last(), cards.last())
