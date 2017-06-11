@@ -1,6 +1,6 @@
 class GameModel {
     val deck = Deck()
-    val wastePile: MutableList<Card> = mutableListOf();
+    val wastePile: MutableList<Card> = mutableListOf()
     val foundationPiles = arrayOf(
             FoundationPile(clubs),
             FoundationPile(diamonds),
@@ -18,5 +18,39 @@ class GameModel {
 
             tableauPiles[i] = TableauPile(cardsInPile)
         }
+    }
+
+    fun onDeckTap(){
+        if (deck.cardsInDeck.isNotEmpty()){
+            val card = deck.drawCard()
+            card.faceUp = true
+            wastePile.add(card)
+        }else{
+            deck.cardsInDeck = wastePile.toMutableList()
+            wastePile.clear()
+        }
+    }
+
+    fun onWasteTap(){
+        if(wastePile.isNotEmpty()){
+            val card = wastePile.last()
+            if(playCard(card)){
+                wastePile.remove(card)
+            }
+        }
+    }
+
+    private fun playCard(card: Card): Boolean {
+        foundationPiles.forEach {
+            if (it.addCard(card)){
+                return true
+            }
+        }
+        tableauPiles.forEach {
+            if (it.addCards(mutableListOf(card))){
+                return true
+            }
+        }
+        return false
     }
 }
