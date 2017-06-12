@@ -10,7 +10,7 @@ object GamePresenter {
         view?.update()
     }
 
-    fun onWateTap(){
+    fun onWasteTap(){
         GameModel.onWasteTap()
         view?.update()
     }
