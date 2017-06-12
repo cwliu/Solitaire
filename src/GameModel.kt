@@ -7,34 +7,36 @@ object GameModel {
             FoundationPile(hearts),
             FoundationPile(spades))
 
-    var tableauPiles = Array(7, {TableauPile()})
+    var tableauPiles = Array(7, { TableauPile() })
 
-    fun resetGame(){
+    fun resetGame() {
         wastePile.clear()
         foundationPiles.forEach { it.reset() }
         deck.reset()
         tableauPiles.forEachIndexed { i, tableauPile ->
-            val cardsInPile: MutableList<Card> = Array(i + 1, {deck.drawCard()}).toMutableList()
+            val cardsInPile: MutableList<Card> = Array(
+                    i + 1, { deck.drawCard() }
+            ).toMutableList()
 
             tableauPiles[i] = TableauPile(cardsInPile)
         }
     }
 
-    fun onDeckTap(){
-        if (deck.cardsInDeck.isNotEmpty()){
+    fun onDeckTap() {
+        if (deck.cardsInDeck.isNotEmpty()) {
             val card = deck.drawCard()
             card.faceUp = true
             wastePile.add(card)
-        }else{
+        } else {
             deck.cardsInDeck = wastePile.toMutableList()
             wastePile.clear()
         }
     }
 
-    fun onWasteTap(){
-        if(wastePile.isNotEmpty()){
+    fun onWasteTap() {
+        if (wastePile.isNotEmpty()) {
             val card = wastePile.last()
-            if(playCard(card)){
+            if (playCard(card)) {
                 wastePile.remove(card)
             }
         }
@@ -42,12 +44,12 @@ object GameModel {
 
     fun playCard(card: Card): Boolean {
         foundationPiles.forEach {
-            if (it.addCard(card)){
+            if (it.addCard(card)) {
                 return true
             }
         }
         tableauPiles.forEach {
-            if (it.addCards(mutableListOf(card))){
+            if (it.addCards(mutableListOf(card))) {
                 return true
             }
         }
@@ -66,12 +68,12 @@ object GameModel {
         }
         return false
     }
-    
-    fun onFoundationTab(foundationIndex: Int){
+
+    fun onFoundationTab(foundationIndex: Int) {
         val foundationPile = foundationPiles[foundationIndex]
-        if(foundationPile.cards.size > 0){
+        if (foundationPile.cards.size > 0) {
             var card = foundationPile.cards.last()
-            if(playCard(card)){
+            if (playCard(card)) {
                 foundationPile.removeCard(card)
             }
         }
@@ -87,7 +89,22 @@ object GameModel {
         }
     }
 
-    fun debugPrint(){
-        println(deck.cardsInDeck.last())
+    fun debugPrint() {
+        var firstLine = if (wastePile.size > 0) "${wastePile.last()}" else "___"
+        firstLine = firstLine.padEnd(18)
+        foundationPiles.forEach {
+            firstLine += if (it.cards.size > 0) "${it.cards.last()}" else "___"
+            firstLine += "   "
+        }
+        println(firstLine)
+        println()
+        for (i in 0..12) {
+            var row = ""
+            tableauPiles.forEach {
+                row += if (it.cards.size > i) "${it.cards[i]}" else "   "
+                row += "   "
+            }
+            println(row)
+        }
     }
 }
