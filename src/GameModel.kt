@@ -40,7 +40,7 @@ object GameModel {
         }
     }
 
-    private fun playCard(card: Card): Boolean {
+    fun playCard(card: Card): Boolean {
         foundationPiles.forEach {
             if (it.addCard(card)){
                 return true
@@ -54,7 +54,7 @@ object GameModel {
         return false
     }
 
-    private fun playCards(cards: MutableList<Card>): Boolean {
+    fun playCards(cards: MutableList<Card>): Boolean {
         if (cards.size == 1) {
             return playCard(cards.first())
         } else {
@@ -85,7 +85,6 @@ object GameModel {
                 tableauPile.removeCards(cardIndex)
             }
         }
-
     }
 
     fun debugPrint(){
